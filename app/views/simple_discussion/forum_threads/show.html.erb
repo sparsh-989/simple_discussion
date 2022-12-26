@@ -1,24 +1,19 @@
 <div class="row">
-  <div class="col-md-11">
-    <h1><%= icon "fas", "thumb-tack", class: "text-muted" if @forum_thread.pinned? %> <%= @forum_thread.title %></h1>
+  <div class="col-md-12 block-inline mb-2">
+    <h2 style="display:inline"><%= icon "fas", "thumb-tack", class: "text-muted" if @forum_thread.pinned? %> <%= @forum_thread.title %></h2>
   </div>
-
-  <% if is_moderator_or_owner?(@forum_thread) %>
-    <div class="col-md-1">
-      <%= link_to icon("fas","pencil"), simple_discussion.edit_forum_thread_path(@forum_thread),
-        class: "text-muted",
-        data: { toggle: "tooltip", placement: "left" },
-        title: t('edit_this_thread') %>
-    </div>
-  <% end %>
-
 </div>
 
-<p class="thread-details">
-  <strong><%= category_link(@forum_thread.forum_category) %></strong>
-  • <%= t('asked_time_ago', time: time_ago_in_words(@forum_thread.created_at), author: @forum_thread.user.name) %>
-</p>
+<div class="d-flex mb-4">
+  <div class="thread-details-custom">
+    <%= t("created_by") %> <%= @forum_thread.user.name %> • <%= time_ago_in_words(@forum_thread.created_at) %> <%= t("ago") %>
+  </div>
+  <div class="category-chip mx-3" style="color: <%= @forum_thread.forum_category.color %>; border-color: <%= @forum_thread.forum_category.color %>">
+    <%= @forum_thread.forum_category.name %>
+  </div>
+</div>
 
 <%= render partial: "simple_discussion/forum_posts/forum_post", collection: @forum_thread.forum_posts.includes(:user).sorted %>
-
 <%= render partial: "simple_discussion/forum_posts/form" if user_signed_in? %>
+
+<%= render partial: "login_bar" if !user_signed_in? %>
