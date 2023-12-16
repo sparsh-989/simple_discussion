@@ -293,6 +293,11 @@
   }
 }
 
+.sidebar-sticky {
+  position: sticky;
+  top: 120px;
+}
+
 .thread-page-container {
   border: 1px solid #80808029;
   padding: 15px;
