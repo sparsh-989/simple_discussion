@@ -1,6 +1,6 @@
 en:
   start_a_discussion: Start A Discussion
-  add_a_comment: Add A Comment
+  add_a_comment: Add a comment...
   ask_a_question: Ask A Question
   asked_time_ago: "Asked %{time} ago by %{author}"
   choose_a_category: Choose a Category
