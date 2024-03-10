@@ -42,12 +42,8 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
   
-    @forum_thread.forum_posts.each do |post|
-      post.body = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(post.body)
-    end
- 
-     # Update the forum post body with the sanitized content
-     
+    @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
+    
 
     if @forum_thread.save
       SimpleDiscussion::ForumThreadNotificationJob.perform_later(@forum_thread)
@@ -59,9 +55,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   private
 
-  def forum_thread_params
-   params.require(:forum_thread).permit(:title, forum_posts_attributes: [:body])
-  end
+  
 
   def edit
   end
