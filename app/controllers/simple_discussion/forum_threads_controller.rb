@@ -41,7 +41,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
-    puts forum_thread_params
+    puts @forum_thread.forum_post.first.body
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
     
 
@@ -53,7 +53,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     end
   end
 
-  private
+  
 
   
 
