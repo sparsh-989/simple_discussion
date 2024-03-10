@@ -45,6 +45,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     first_post = @forum_thread.forum_posts.first
 
   # Get the current body content
+    puts first_post.title
     current_body = first_post.body
     
 
