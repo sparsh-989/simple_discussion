@@ -12,8 +12,9 @@ class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationCont
     
     @forum_post.user_id = current_user.id
     filtered_body = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(@forum_post.body)
-    
-    @forum_post.body = filtered_body
+    filtered_body1 = LanguageFilter::Filter.new(matchlist: :hate, replacement: :stars).sanitize(filtered_body)
+    @forum_post.body=filtered_body1
+ 
     
 
     if @forum_post.save
