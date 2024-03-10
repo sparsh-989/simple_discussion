@@ -44,7 +44,11 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     # Retrieve the first forum post
     
     filtered_title = LanguageFilter::Filter.new(matchlist: :violence, replacement: :stars).sanitize(@forum_thread.title)
-    @forum_thread.title = filtered_title
+    filtered_title1 = LanguageFilter::Filter.new(matchlist: :hate, replacement: :stars).sanitize(filtered_title)
+    filtered_title2 = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(filtered_title1)
+    filtered_title3 = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(filtered_title2)
+
+    @forum_thread.title = filtered_title3
     first_post = @forum_thread.forum_posts.first
 
   # Get the current body content
