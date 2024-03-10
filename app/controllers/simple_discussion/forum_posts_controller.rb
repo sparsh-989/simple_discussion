@@ -1,4 +1,5 @@
 class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationController
+  require 'language_filter'
   before_action :authenticate_user!
   before_action :set_forum_thread
   before_action :set_forum_post, only: [:edit, :update, :destroy]
