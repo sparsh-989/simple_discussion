@@ -42,7 +42,9 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
     # Retrieve the first forum post
-    puts @forum_thread.title
+    
+    filtered_title = LanguageFilter::Filter.new(matchlist: :violence, replacement: :stars).sanitize(@forum_thread.title)
+    @forum_thread.title = filtered_title
     first_post = @forum_thread.forum_posts.first
 
   # Get the current body content
@@ -59,7 +61,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   # Update the body with filtered content
     first_post.body = filtered_body3
-    puts filtered_body
+    
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
     
 
