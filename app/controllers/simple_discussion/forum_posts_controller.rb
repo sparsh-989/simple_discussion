@@ -11,7 +11,10 @@ class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationCont
     
     @forum_post.user_id = current_user.id
     filtered_body = LanguageFilter::Filter.new(matchlist: :violence, replacement: :stars).sanitize(@forum_post.body)
-    @forum_post.body = filtered_body
+    filtered_body1 = LanguageFilter::Filter.new(matchlist: :hate, replacement: :stars).sanitize(@filtered.body)
+    filtered_body2 = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(@filtered.body1)
+    filtered_body3 = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(@filtered.body2)
+    @forum_post.body = filtered_body3
     
 
     if @forum_post.save
