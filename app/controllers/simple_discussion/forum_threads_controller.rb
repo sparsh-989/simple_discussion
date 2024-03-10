@@ -2,6 +2,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   before_action :authenticate_user!, only: [:mine, :participating, :new, :create]
   before_action :set_forum_thread, only: [:show, :edit, :update]
   before_action :require_mod_or_author_for_thread!, only: [:edit, :update]
+  require 'language_filter'
 
   def index
     @forum_threads = ForumThread.pinned_first.sorted.includes(:user, :forum_category).paginate(page: page_number)
@@ -37,12 +38,25 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     @forum_thread.forum_posts.new
   end
 
+  private
+
+def forum_thread_params
+  params.require(:forum_thread).permit(:title, forum_posts_attributes: [:body])
+end
+
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
   
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
 
     if @forum_thread.save
+      # Sanitize the body of the forum post using LanguageFilter gem
+     language_filter = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars)
+     sanitized_body = language_filter.sanitize(forum_thread_params[:forum_posts_attributes]["0"][:body])
+
+    # Update the forum post body with the sanitized content
+     @forum_thread.forum_posts.first.update(body: sanitized_body)
+
       SimpleDiscussion::ForumThreadNotificationJob.perform_later(@forum_thread)
       redirect_to simple_discussion.forum_thread_path(@forum_thread)
     else
