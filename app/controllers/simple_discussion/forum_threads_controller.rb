@@ -46,13 +46,14 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   # Get the current body content
     current_body = first_post.body
-    puts current_body
+    
 
   # Apply language filter
     filtered_body = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(current_body)
 
   # Update the body with filtered content
     first_post.body = filtered_body
+    puts first_post.body
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
     
 
