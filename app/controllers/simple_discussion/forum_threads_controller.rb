@@ -41,15 +41,17 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
-     # Sanitize the body of the first forum post
-    language_filter = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars)
-    sanitized_body = language_filter.sanitize(@forum_thread.forum_posts.attributes["body"])  # Access body from params
-    
-    # Update the forum post body with the sanitized content
-    @forum_thread.forum_posts.build(body: sanitized_body)
+  
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
 
     if @forum_thread.save
+      # Sanitize the body of the forum post using LanguageFilter gem
+     language_filter = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars)
+     sanitized_body = language_filter.sanitize(forum_thread_params[:forum_posts_attributes]["0"][:body])
+
+    # Update the forum post body with the sanitized content
+     @forum_thread.forum_posts.first.update(body: sanitized_body)
+
       SimpleDiscussion::ForumThreadNotificationJob.perform_later(@forum_thread)
       redirect_to simple_discussion.forum_thread_path(@forum_thread)
     else
