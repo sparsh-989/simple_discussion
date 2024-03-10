@@ -41,7 +41,17 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
-    puts @forum_thread.forum_posts.first.body
+    # Retrieve the first forum post
+    first_post = @forum_thread.forum_posts.first
+
+  # Get the current body content
+    current_body = first_post.body
+
+  # Apply language filter
+    filtered_body = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(current_body)
+
+  # Update the body with filtered content
+    first_post.body = filtered_body
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
     
 
