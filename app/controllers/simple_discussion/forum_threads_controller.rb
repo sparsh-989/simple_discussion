@@ -44,7 +44,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
      # Sanitize the body of the first forum post
     language_filter = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars)
     sanitized_body = language_filter.sanitize(@forum_thread.forum_posts.attributes["body"])  # Access body from params
-    put "sanitized_body"
+    
     # Update the forum post body with the sanitized content
     @forum_thread.forum_posts.build(body: sanitized_body)
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
