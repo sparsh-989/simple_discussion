@@ -7,7 +7,7 @@ class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationCont
 
   def create
     @forum_post = @forum_thread.forum_posts.new(forum_post_params)
-    puts forum_post_params
+    puts forum_post_params.body
     @forum_post.user_id = current_user.id
 
     if @forum_post.save
