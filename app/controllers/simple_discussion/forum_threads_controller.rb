@@ -53,7 +53,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
 
   # Update the body with filtered content
     first_post.body = filtered_body
-    puts first_post.body
+    puts filtered_body
     @forum_thread.forum_posts.each { |post| post.user_id = current_user.id }
     
 
