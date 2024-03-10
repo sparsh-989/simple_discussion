@@ -42,10 +42,11 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   def create
     @forum_thread = current_user.forum_threads.new(forum_thread_params)
     # Retrieve the first forum post
+    puts @forum_thread.title
     first_post = @forum_thread.forum_posts.first
 
   # Get the current body content
-    puts first_post.title
+    
     current_body = first_post.body
     
 
