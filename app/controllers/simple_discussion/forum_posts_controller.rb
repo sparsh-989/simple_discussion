@@ -9,7 +9,9 @@ class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationCont
     @forum_post = @forum_thread.forum_posts.new(forum_post_params)
     
     @forum_post.user_id = current_user.id
-    puts @forum_post.body
+    filtered_body = LanguageFilter::Filter.new(matchlist: :violence, replacement: :stars).sanitize(@forum_post.body)
+    @forum_post.body = filtered_body
+    
 
     if @forum_post.save
       
