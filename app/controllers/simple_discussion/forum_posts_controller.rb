@@ -1,20 +1,19 @@
 class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationController
-  require 'language_filter'
   before_action :authenticate_user!
   before_action :set_forum_thread
   before_action :set_forum_post, only: [:edit, :update, :destroy]
   before_action :require_mod_or_author_for_post!, only: [:edit, :update, :destroy]
   before_action :require_mod_or_author_for_thread!, only: [:solved, :unsolved]
+  require 'language_filter'
+  
 
   def create
     @forum_post = @forum_thread.forum_posts.new(forum_post_params)
     
     @forum_post.user_id = current_user.id
-    filtered_body = LanguageFilter::Filter.new(matchlist: :violence, replacement: :stars).sanitize(@forum_post.body)
-    filtered_body1 = LanguageFilter::Filter.new(matchlist: :hate, replacement: :stars).sanitize(@filtered.body)
-    filtered_body2 = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(@filtered.body1)
-    filtered_body3 = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(@filtered.body2)
-    @forum_post.body = filtered_body3
+    filtered_body = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(@forum_post.body)
+    
+    @forum_post.body = filtered_body
     
 
     if @forum_post.save
