@@ -44,7 +44,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
   
     @forum_thread.forum_posts.each do |post|
       post.body = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(post.body)
-    
+    end
  
      # Update the forum post body with the sanitized content
      
