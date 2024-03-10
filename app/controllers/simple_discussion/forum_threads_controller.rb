@@ -49,7 +49,7 @@ class SimpleDiscussion::ForumThreadsController < SimpleDiscussion::ApplicationCo
     
 
   # Apply language filter
-    filtered_body = LanguageFilter::Filter.new(matchlist: :profanity, replacement: :stars).sanitize(current_body)
+    filtered_body = LanguageFilter::Filter.new(matchlist: :sex, replacement: :stars).sanitize(current_body)
 
   # Update the body with filtered content
     first_post.body = filtered_body
