@@ -9,9 +9,10 @@ class SimpleDiscussion::ForumPostsController < SimpleDiscussion::ApplicationCont
     @forum_post = @forum_thread.forum_posts.new(forum_post_params)
     
     @forum_post.user_id = current_user.id
+    puts @forum_post.body
 
     if @forum_post.save
-      puts @forum_post.body
+      
       SimpleDiscussion::ForumPostNotificationJob.perform_later(@forum_post)
       redirect_to simple_discussion.forum_thread_path(@forum_thread, anchor: "forum_post_#{@forum_post.id}")
     else
