@@ -30,6 +30,15 @@
 
 
 <div class="mt-4"></div>
+<script>
+$(document).ready(function() {
+  var simplemde = new SimpleMDE({
+    element: $(".simplemde")[0], // Target the text area with class "simplemde"
+    // Add your desired SimpleMDE configuration options here
+  });
+});
+</script>
+
 <%= form_for [@forum_thread, @forum_post],
   url: (@forum_post.persisted? ? simple_discussion.forum_thread_forum_post_path(@forum_thread, @forum_post) : simple_discussion.forum_thread_forum_posts_path(@forum_thread)),
   html: { data: { behavior: "comment-form" } } do |f| %>
@@ -58,11 +67,4 @@
 
 <% end %>
 
-<script>
-$(document).ready(function() {
-  var simplemde = new SimpleMDE({
-    element: $(".simplemde")[0], // Target the text area with class "simplemde"
-    // Add your desired SimpleMDE configuration options here
-  });
-});
-</script>
+
