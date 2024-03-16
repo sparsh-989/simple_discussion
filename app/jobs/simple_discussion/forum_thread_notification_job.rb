@@ -3,7 +3,7 @@ class SimpleDiscussion::ForumThreadNotificationJob < ApplicationJob
 
   def perform(forum_thread)
     send_emails(forum_thread) if SimpleDiscussion.send_email_notifications
-    send_webhook(forum_thread) if SimpleDiscussion.send_slack_notifications
+    send_webhook(forum_thread)  
   end
 
   def send_emails(forum_thread)
@@ -34,7 +34,7 @@ class SimpleDiscussion::ForumThreadNotificationJob < ApplicationJob
       ],
       ts: forum_post.created_at.to_i
     }
-
+    puts "netaji hello"
     SimpleDiscussion::Slack.new(slack_webhook_url).post(payload)
   end
 end
